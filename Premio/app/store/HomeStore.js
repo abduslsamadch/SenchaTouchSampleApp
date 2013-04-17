@@ -45,8 +45,8 @@ Ext.define('Premio.store.HomeStore', {
 	      },
 	      load: function() 
 	      {
-			//var panel = Ext.getCmp('wishList');
-			//panel.getParent().unmask();
+			var panel = Ext.getCmp('wishList');
+			panel.getParent().unmask();
 			console.log("after Load");
 	      }
 	    },

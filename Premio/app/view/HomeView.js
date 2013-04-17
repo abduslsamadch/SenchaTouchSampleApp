@@ -1,4 +1,4 @@
-var view = Ext.define('Premio.view.HomeView', {
+Ext.define('Premio.view.HomeView', {
 	extend: 'Ext.navigation.View',
     fullscreen: true,
 	require:[
@@ -10,11 +10,22 @@ var view = Ext.define('Premio.view.HomeView', {
     config:
 	{
 		//layout:'vbox',
+		navigationBar: 
+		{
+			//hidden:'yes',
+		},
     	items: 
 		[
+			// {
+			// 			   xtype: 'panel',
+			// 			   html: 'Restaurants',
+			// 			   cls:'topBarForTutorial',
+			// 			   id:'HomeView_titleBar',
+			// 			   flex:1
+			// 			},
         	{
 				xtype:'list',
-				flex:2,
+				flex:3,
 				id:'wishList',
 				store:'getWishList',
 			    
@@ -24,15 +35,17 @@ var view = Ext.define('Premio.view.HomeView', {
 					     '<div style ="float:left; display:inline; height:80px; width:100%">',
 					            '<div style="">{business_title}</div>',
 					            '<div style="">{business_city}</div>',
+								'<div style=""><input type="button" text="wishlist" width="50" img="{business_img_url}"></div>',
 								'<div style="display:none;">{business_id}</div>',
 					     '</div>',
 					'</div>'),
 					
-					
 			    listeners: 
 			    {
 			    	select: function(view, record) 
-			    	{							var detailView = Ext.getCmp('RestaurantDetailViewID');
+			    	{	
+						/*	
+						var detailView = Ext.getCmp('RestaurantDetailViewID');
 						    if(!detailView)
 						    {
 						      detailView = new Premio.view.RestaurantDetailVC;
@@ -40,11 +53,26 @@ var view = Ext.define('Premio.view.HomeView', {
 						    var data = record.get('business_id');
 						    detailView.initializeView(data);
 							Ext.getCmp('MainViewID').push(detailView);
+							*/
+						
+						
+							var detailView=Ext.ComponentQuery.query('#RestaurantDetailViewID')[0] || {
+							            title:record.get('business_title'),
+							            xtype:'RestaurantDetailView'
+							        };
+							Ext.getCmp('MainViewID').push(detailView);
+							var data = record.get('business_id');
+							Ext.getCmp('RestaurantDetailViewID').initializeView(data);
 			    	}
 			    }
         	}
     	]
-  }
+  	},
+	listeners: {
+	        painted: function() {
+	            console.log('I was painted to the screen');
+	        }
+	    }
 });
 
 

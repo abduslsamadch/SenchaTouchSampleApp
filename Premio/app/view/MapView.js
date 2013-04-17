@@ -4,6 +4,9 @@ Ext.define("Premio.view.MapView", {
     extend: "Ext.Map",
     xtype: 'mapview',
 	id:'mapviewID',
+	require:[
+		'Premio.view.MapView'
+	],
     config: 
 	{
         useCurrentLocation: true,
@@ -37,4 +40,3 @@ Ext.define("Premio.view.MapView", {
 			console.log('addMarkerOnMapAtPostion ' + this.v_latitude + this.v_longitude);
 	}
 });
-//Ext.create('Premio.view.MapView');

@@ -1,4 +1,4 @@
-var restaurantMap = Ext.create('Premio.view.MapView');
+Ext.create('Premio.view.MapView');
 
 Ext.define('Premio.view.RestaurantDetailVC', {
 	extend: 'Ext.Container',
@@ -8,15 +8,43 @@ Ext.define('Premio.view.RestaurantDetailVC', {
 	config: 
 	{
 		layout: 'vbox',
+		navigationBar: 
+		{
+			hidden:'yes',
+		},
 	    items:
-		[
+		[/*
 			{
 				xtype: 'panel',
-			    html: '-',
 				cls:'topBarForTutorial',
+				flex:1,
+				layout:'hbox',
+				//id:'titleBarContainer',
 				id:'RestaurantDetailView_titleBar',
-				flex:1
-			},
+				items:
+				[
+					{
+						xtype: 'button',
+						ui:'back',
+					    text: 'back',
+						width:90,
+						height:30,
+						listeners: 
+						{
+						   tap: function() 
+						   {
+						      	Ext.getCmp('MainViewID').pop();
+						   }
+						}
+					}// ,
+					// 					{
+					// 						xtype: 'panel',
+					// 					    html: '-',
+					// 						id:'RestaurantDetailView_titleBars',
+					// 						flex:8,
+					// 					}	
+				]
+			},*/
 			{
 				layout:'hbox',
 				flex:2,
@@ -51,7 +79,10 @@ Ext.define('Premio.view.RestaurantDetailVC', {
 					},
 					{
 						xtype:'button',
-						title:'wishList'
+						title:'wishList',
+						width:20,
+						height:20,
+						cls:'wishListBtnClass',
 					}
 				]
 			},
@@ -67,6 +98,15 @@ Ext.define('Premio.view.RestaurantDetailVC', {
 		console.log("business_id = "+bus_id);
 		this.intiateRequestForBussinessDetailsForID(bus_id);
 		//window.onload = this.loadGM;
+		// 
+		
+		var panel = Ext.getCmp('RestaurantDetailViewID');
+		panel.getParent().setMasked
+		({
+			xtype:'loadmask',
+			message:'Loading...',
+			//	indicator: true
+		});		
 	},
 	intiateRequestForBussinessDetailsForID:function(bus_id)
 	{
@@ -94,14 +134,16 @@ Ext.define('Premio.view.RestaurantDetailVC', {
 	},
 	populateUserInterfaceItemsFromResonseObject:function(response)
 	{
-		var result = Ext.JSON.decode(response.responseText);
-		console.log(result.status + result.businesses.business_title);
+		var panel = Ext.getCmp('RestaurantDetailViewID');
+		panel.getParent().unmask();
 		
-		Ext.getCmp('RestaurantDetailView_titleBar').setHtml(result.businesses.business_title);
+		var result = Ext.JSON.decode(response.responseText);
+	//	Ext.getCmp('RestaurantDetailView_titleBar').setHtml(result.businesses.business_title);
 		Ext.getCmp('RestaurantDetailView_businessImage').setSrc(result.businesses.business_img_url);
 		Ext.getCmp('RestaurantDetailView_businessTitle').setHtml(result.businesses.business_title);
 		Ext.getCmp('RestaurantDetailView_BusinessDetail').setHtml(result.businesses.business_address);
 		Ext.getCmp('mapviewID').addMarkerOnMapAtPostion(result.businesses.business_latitude,result.businesses.business_longitude);
+	//	Ext.getCmp('HomeView_titleBar').setHidden=true;
 	}
 	
 });
